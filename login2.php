@@ -1,0 +1,58 @@
+<?php
+session_start();
+$message = "";
+
+// Gestion du formulaire
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $mail = $_POST['mail'] ?? ''; // Correction : champ "mail" et non "username"
+    $password = $_POST['password'] ?? '';
+    $query = $pdo->prepare("SELECT * FROM users WHERE mail = ?");
+    $query->execute([$mail]);
+    $user = $query->fetch();
+
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['mail'] = $user['mail'];
+        $_SESSION['prenom'] = $user['prenom'];
+        $_SESSION['nom'] = $user['nom'];
+        $_SESSION['role_id'] = $user['role_id']; // Optionnel
+        $redirect_url = $_SESSION['redirect_after_login'] ?? 'index.php';
+        unset($_SESSION['redirect_after_login']);
+        header("Location: $redirect_url");
+        exit();
+    } else {
+        $message = "⚠️ Identifiants incorrects !";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="/astreinte/assets/css/login2.css">
+</head>
+<body>
+    <div class="toutletableau">
+        <!-- Côté gauche (connexion) -->
+        <div id="squaretableau-gauche">
+            <h2>Connexion</h2>
+            <form class="inputform" method="POST">
+                <input type="email" name="mail" class="input-login" placeholder="Email" required>
+                <input type="password" name="password" class="input-login" placeholder="Mot de passe" required>
+                <button type="submit" class="btn-connexion">Se connecter</button>
+            </form>
+        </div>
+
+        <!-- Côté droit (inscription) -->
+        <div id="squaretableau-droite">
+            <h2>Créer un compte</h2>
+            <form method="POST">
+                <button type="button" class="btn-inscription" onclick="window.location.href='register2.php'">S'inscrire</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <link rel="stylesheet" href="/astreinte/assets/css/login2.css">
+</head>
+<body>
+    <div class="toutletableau">
+        <!-- Côté gauche (formulaire d'inscription) -->
+        <div id="squaretableau-gauche">
+            <h2>Créer un compte</h2>
+
+            <!-- Messages d'erreur/succès -->
+            <?php if (!empty($errors)): ?>
+                <div class="error-messages">
+                    <?php foreach ($errors as $error): ?>
+                        <p><?php echo htmlspecialchars($error); ?></p>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION["success"])): ?>
+                <div class="success-message">
+                    <?php echo htmlspecialchars($_SESSION["success"]); unset($_SESSION["success"]); ?>
+                </div>
+            <?php endif; ?>
+
+            <form class="inputform" method="POST">
+                <div class="form-group">
+                    <input type="text" name="nom" class="input-login <?php echo isset($errors["nom"]) ? "error" : ""; ?>"
+                           placeholder="Nom" value="<?php echo htmlspecialchars($nom ?? ""); ?>" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="prenom" class="input-login <?php echo isset($errors["prenom"]) ? "error" : ""; ?>"
+                           placeholder="Prénom" value="<?php echo htmlspecialchars($prenom ?? ""); ?>" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" class="input-login <?php echo isset($errors["email"]) ? "error" : ""; ?>"
+                           placeholder="Email" value="<?php echo htmlspecialchars($email ?? ""); ?>" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="input-login <?php echo isset($errors["password"]) ? "error" : ""; ?>"
+                           placeholder="Mot de passe (8+ caractères)" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="confirm_password" class="input-login <?php echo isset($errors["confirm_password"]) ? "error" : ""; ?>"
+                           placeholder="Confirmer le mot de passe" required>
+                </div>
+                <button type="submit" class="btn-connexion">S'inscrire</button>
+            </form>
+            <p class="login-link">Déjà un compte ? <a href="login2.php">Se connecter</a></p>
+        </div>
+
+        <!-- Côté droit (illustration) -->
+        <div id="squaretableau-droite">
+            <h2>Bienvenue !</h2>
+            <p>Rejoignez notre communauté pour accéder à toutes les fonctionnalités.</p>
+            <div class="illustration">
+                <!-- Tu peux ajouter une image ou une icône ici -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
